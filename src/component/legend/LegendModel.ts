@@ -236,6 +236,7 @@ export interface LegendOption extends ComponentOption, LegendStyleOption,
      */
     tooltip?: CommonTooltipOption<LegendTooltipFormatterParams>
 
+    rotate?: number
 }
 
 class LegendModel<Ops extends LegendOption = LegendOption> extends ComponentModel<Ops> {

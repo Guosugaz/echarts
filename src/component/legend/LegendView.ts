@@ -74,7 +74,6 @@ class LegendView extends ComponentView {
     private _isFirstRender: boolean;
 
     init() {
-
         this.group.add(this._contentGroup = new Group());
         this.group.add(this._selectorGroup = new Group());
 
@@ -113,6 +112,10 @@ class LegendView extends ComponentView {
         }
 
         let itemAlign = legendModel.get('align');
+        const rotation = legendModel.get('rotate');
+
+        this.getContentGroup().rotation = (rotation || 0) * Math.PI / 180 || 0;
+
         const orient = legendModel.get('orient');
         if (!itemAlign || itemAlign === 'auto') {
             itemAlign = (
