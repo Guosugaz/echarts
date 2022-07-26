@@ -7349,14 +7349,14 @@
         // `new Date(1478412000000).getTimezoneOffset();  // get 300`
         // So we should not use `new Date`, but use `Date.UTC`.
         else {
-            var hour = +match[4] || 0;
+          var hour = +match[4] || 0;
 
-            if (match[8].toUpperCase() !== 'Z') {
-              hour -= +match[8].slice(0, 3);
-            }
-
-            return new Date(Date.UTC(+match[1], +(match[2] || 1) - 1, +match[3] || 1, hour, +(match[5] || 0), +match[6] || 0, match[7] ? +match[7].substring(0, 3) : 0));
+          if (match[8].toUpperCase() !== 'Z') {
+            hour -= +match[8].slice(0, 3);
           }
+
+          return new Date(Date.UTC(+match[1], +(match[2] || 1) - 1, +match[3] || 1, hour, +(match[5] || 0), +match[6] || 0, match[7] ? +match[7].substring(0, 3) : 0));
+        }
       } else if (value == null) {
         return new Date(NaN);
       }
@@ -7932,13 +7932,13 @@
         var nextIdx = 0;
 
         while ( // Be `!resultItem` only when `nextIdx >= result.length`.
-        (resultItem = result[nextIdx]) && ( // (1) Existing models that already have id should be able to mapped to. Because
+        (resultItem = result[nextIdx] // (1) Existing models that already have id should be able to mapped to. Because
         // after mapping performed, model will always be assigned with an id if user not given.
         // After that all models have id.
         // (2) If new option has id, it can only set to a hole or append to the last. It should
         // not be merged to the existings with different id. Because id should not be overwritten.
         // (3) Name can be overwritten, because axis use name as 'show label text'.
-        resultItem.newOption || isComponentIdInternal(resultItem.existing) || // In mode "replaceMerge", here no not-mapped-non-internal-existing.
+        ) && (resultItem.newOption || isComponentIdInternal(resultItem.existing) || // In mode "replaceMerge", here no not-mapped-non-internal-existing.
         resultItem.existing && cmptOption.id != null && !keyExistAndEqual('id', cmptOption, resultItem.existing))) {
           nextIdx++;
         }
@@ -12144,21 +12144,21 @@
             emphasisStyle.fill = fromFill;
           } // Apply default color lift
           else if (!hasFillOrStroke(emphasisStyle.fill) && hasFillOrStroke(fromFill)) {
-              cloned = true; // Not modify the original value.
+            cloned = true; // Not modify the original value.
 
+            state = extend({}, state);
+            emphasisStyle = extend({}, emphasisStyle); // Already being applied 'emphasis'. DON'T lift color multiple times.
+
+            emphasisStyle.fill = liftColor(fromFill);
+          } // Not highlight stroke if fill has been highlighted.
+          else if (!hasFillOrStroke(emphasisStyle.stroke) && hasFillOrStroke(fromStroke)) {
+            if (!cloned) {
               state = extend({}, state);
-              emphasisStyle = extend({}, emphasisStyle); // Already being applied 'emphasis'. DON'T lift color multiple times.
+              emphasisStyle = extend({}, emphasisStyle);
+            }
 
-              emphasisStyle.fill = liftColor(fromFill);
-            } // Not highlight stroke if fill has been highlighted.
-            else if (!hasFillOrStroke(emphasisStyle.stroke) && hasFillOrStroke(fromStroke)) {
-                if (!cloned) {
-                  state = extend({}, state);
-                  emphasisStyle = extend({}, emphasisStyle);
-                }
-
-                emphasisStyle.stroke = liftColor(fromStroke);
-              }
+            emphasisStyle.stroke = liftColor(fromStroke);
+          }
 
           state.style = emphasisStyle;
         }
@@ -16672,20 +16672,20 @@
         // Than we can make sure user only want those two, and ignore
         // all origin params in targetOption.
         else if (newValueCount >= enoughParamNumber) {
-            return newParams;
-          } else {
-            // Chose another param from targetOption by priority.
-            for (var i = 0; i < names.length; i++) {
-              var name_1 = names[i];
+          return newParams;
+        } else {
+          // Chose another param from targetOption by priority.
+          for (var i = 0; i < names.length; i++) {
+            var name_1 = names[i];
 
-              if (!hasProp(newParams, name_1) && hasProp(targetOption, name_1)) {
-                newParams[name_1] = targetOption[name_1];
-                break;
-              }
+            if (!hasProp(newParams, name_1) && hasProp(targetOption, name_1)) {
+              newParams[name_1] = targetOption[name_1];
+              break;
             }
-
-            return newParams;
           }
+
+          return newParams;
+        }
       }
 
       function hasProp(obj, name) {
@@ -17160,15 +17160,15 @@
           // both dimensions name.
         } // In category way, the first category axis.
         else if (baseCategoryDimIndex === coordDimIdx) {
-            pushDim(encode[coordDimName], 0, count);
-            pushDim(encodeItemName, 0, count);
-          } // In category way, the other axis.
-          else {
-              var start = datasetRecord.categoryWayDim;
-              pushDim(encode[coordDimName], start, count);
-              pushDim(encodeSeriesName, start, count);
-              datasetRecord.categoryWayDim += count;
-            }
+          pushDim(encode[coordDimName], 0, count);
+          pushDim(encodeItemName, 0, count);
+        } // In category way, the other axis.
+        else {
+          var start = datasetRecord.categoryWayDim;
+          pushDim(encode[coordDimName], start, count);
+          pushDim(encodeSeriesName, start, count);
+          datasetRecord.categoryWayDim += count;
+        }
       });
 
       function pushDim(dimIdxArr, idxFrom, idxCount) {
@@ -18624,12 +18624,12 @@
       } // For convenience, enable to use the root option as the `baseOption`:
       // `{ ...normalOptionProps, media: [{ ... }, { ... }] }`
       else {
-          if (hasTimeline || hasMedia) {
-            rawOption.options = rawOption.media = null;
-          }
-
-          baseOption = rawOption;
+        if (hasTimeline || hasMedia) {
+          rawOption.options = rawOption.media = null;
         }
+
+        baseOption = rawOption;
+      }
 
       if (hasMedia) {
         if (isArray(mediaOnRoot)) {
@@ -19399,13 +19399,13 @@
               || stackStrategy === 'positive' && val > 0 || stackStrategy === 'negative' && val < 0 || stackStrategy === 'samesign' && sum >= 0 && val > 0 // All positive stack
               || stackStrategy === 'samesign' && sum <= 0 && val < 0 // All negative stack
               ) {
-                  // The sum has to be very small to be affected by the
-                  // floating arithmetic problem. An incorrect result will probably
-                  // cause axis min/max to be filtered incorrectly.
-                  sum = addSafe(sum, val);
-                  stackedOver = val;
-                  break;
-                }
+                // The sum has to be very small to be affected by the
+                // floating arithmetic problem. An incorrect result will probably
+                // cause axis min/max to be filtered incorrectly.
+                sum = addSafe(sum, val);
+                stackedOver = val;
+                break;
+              }
             }
           }
 
@@ -20285,12 +20285,12 @@
           this._dueEnd = upTask._outputDueEnd;
         } // DataTask or overallTask
         else {
-            if ("development" !== 'production') {
-              assert(!this._progress || this._count);
-            }
+          if ("development" !== 'production') {
+            assert(!this._progress || this._count);
+          }
 
-            this._dueEnd = this._count ? this._count(this.context) : Infinity;
-          } // Note: Stubs, that its host overall task let it has progress, has progress.
+          this._dueEnd = this._count ? this._count(this.context) : Infinity;
+        } // Note: Stubs, that its host overall task let it has progress, has progress.
         // If no progress, pass index from upstream to downstream each time plan called.
 
 
@@ -20722,14 +20722,14 @@
       } // If dimension definitions are not defined and can not be detected.
       // e.g., pure data `[[11, 22], ...]`.
       else {
-          for (var i = 0; i < internalSource.dimensionsDetectedCount || 0; i++) {
-            // Do not generete name or anything others. The consequence process in
-            // `transform` or `series` probably have there own name generation strategry.
-            dimensions.push({
-              index: i
-            });
-          }
-        } // Implement public methods:
+        for (var i = 0; i < internalSource.dimensionsDetectedCount || 0; i++) {
+          // Do not generete name or anything others. The consequence process in
+          // `transform` or `series` probably have there own name generation strategry.
+          dimensions.push({
+            index: i
+          });
+        }
+      } // Implement public methods:
 
 
       var rawItemGetter = getRawSourceItemGetter(sourceFormat, SERIES_LAYOUT_BY_COLUMN);
@@ -22375,10 +22375,10 @@
             upstreamSignList = [upSourceMgr._getVersionSign()];
           } // Series data is from own.
           else {
-              data = seriesModel.get('data', true);
-              sourceFormat = isTypedArray(data) ? SOURCE_FORMAT_TYPED_ARRAY : SOURCE_FORMAT_ORIGINAL;
-              upstreamSignList = [];
-            } // See [REQUIREMENT_MEMO], merge settings on series and parent dataset if it is root.
+            data = seriesModel.get('data', true);
+            sourceFormat = isTypedArray(data) ? SOURCE_FORMAT_TYPED_ARRAY : SOURCE_FORMAT_ORIGINAL;
+            upstreamSignList = [];
+          } // See [REQUIREMENT_MEMO], merge settings on series and parent dataset if it is root.
 
 
           var newMetaRawOption = this._getSourceMetaRawOption() || {};
@@ -22407,10 +22407,10 @@
             upstreamSignList = result.upstreamSignList;
           } // Is root dataset.
           else {
-              var sourceData = datasetModel.get('source', true);
-              resultSourceList = [createSource(sourceData, this._getSourceMetaRawOption(), null)];
-              upstreamSignList = [];
-            }
+            var sourceData = datasetModel.get('source', true);
+            resultSourceList = [createSource(sourceData, this._getSourceMetaRawOption(), null)];
+            upstreamSignList = [];
+          }
         }
 
         if ("development" !== 'production') {
@@ -22593,11 +22593,11 @@
           dimensions = sourceHost.get('dimensions', true);
         } // See [REQUIREMENT_MEMO], `non-root-dataset` do not support them.
         else if (!this._getUpstreamSourceManagers().length) {
-            var model = sourceHost;
-            seriesLayoutBy = model.get('seriesLayoutBy', true);
-            sourceHeader = model.get('sourceHeader', true);
-            dimensions = model.get('dimensions', true);
-          }
+          var model = sourceHost;
+          seriesLayoutBy = model.get('seriesLayoutBy', true);
+          sourceHeader = model.get('sourceHeader', true);
+          dimensions = model.get('dimensions', true);
+        }
 
         return {
           seriesLayoutBy: seriesLayoutBy,
@@ -24324,9 +24324,9 @@
         // pipelines will be disabled unexpectedly. But it still needs stubs to receive
         // dirty info from upsteam.
         else {
-            overallProgress = false;
-            each(ecModel.getSeries(), createStub);
-          }
+          overallProgress = false;
+          each(ecModel.getSeries(), createStub);
+        }
 
         function createStub(seriesModel) {
           var pipelineId = seriesModel.uid;
@@ -24784,42 +24784,42 @@
           cptQuery.subType = condCptType.sub || null;
         } // `query` is an object, convert to {mainType, index, name, id}.
         else {
-            // `xxxIndex`, `xxxName`, `xxxId`, `name`, `dataIndex`, `dataType` is reserved,
-            // can not be used in `compomentModel.filterForExposedEvent`.
-            var suffixes_1 = ['Index', 'Name', 'Id'];
-            var dataKeys_1 = {
-              name: 1,
-              dataIndex: 1,
-              dataType: 1
-            };
-            each(query, function (val, key) {
-              var reserved = false;
+          // `xxxIndex`, `xxxName`, `xxxId`, `name`, `dataIndex`, `dataType` is reserved,
+          // can not be used in `compomentModel.filterForExposedEvent`.
+          var suffixes_1 = ['Index', 'Name', 'Id'];
+          var dataKeys_1 = {
+            name: 1,
+            dataIndex: 1,
+            dataType: 1
+          };
+          each(query, function (val, key) {
+            var reserved = false;
 
-              for (var i = 0; i < suffixes_1.length; i++) {
-                var propSuffix = suffixes_1[i];
-                var suffixPos = key.lastIndexOf(propSuffix);
+            for (var i = 0; i < suffixes_1.length; i++) {
+              var propSuffix = suffixes_1[i];
+              var suffixPos = key.lastIndexOf(propSuffix);
 
-                if (suffixPos > 0 && suffixPos === key.length - propSuffix.length) {
-                  var mainType = key.slice(0, suffixPos); // Consider `dataIndex`.
+              if (suffixPos > 0 && suffixPos === key.length - propSuffix.length) {
+                var mainType = key.slice(0, suffixPos); // Consider `dataIndex`.
 
-                  if (mainType !== 'data') {
-                    cptQuery.mainType = mainType;
-                    cptQuery[propSuffix.toLowerCase()] = val;
-                    reserved = true;
-                  }
+                if (mainType !== 'data') {
+                  cptQuery.mainType = mainType;
+                  cptQuery[propSuffix.toLowerCase()] = val;
+                  reserved = true;
                 }
               }
+            }
 
-              if (dataKeys_1.hasOwnProperty(key)) {
-                dataQuery[key] = val;
-                reserved = true;
-              }
+            if (dataKeys_1.hasOwnProperty(key)) {
+              dataQuery[key] = val;
+              reserved = true;
+            }
 
-              if (!reserved) {
-                otherQuery[key] = val;
-              }
-            });
-          }
+            if (!reserved) {
+              otherQuery[key] = val;
+            }
+          });
+        }
 
         return {
           cptQuery: cptQuery,
@@ -26906,36 +26906,36 @@
           triggerUpdatedEvent.call(this, silent);
         } // Avoid do both lazy update and progress in one frame.
         else if (scheduler.unfinished) {
-            // Stream progress.
-            var remainTime = TEST_FRAME_REMAIN_TIME;
-            var ecModel = this._model;
-            var api = this._api;
-            scheduler.unfinished = false;
+          // Stream progress.
+          var remainTime = TEST_FRAME_REMAIN_TIME;
+          var ecModel = this._model;
+          var api = this._api;
+          scheduler.unfinished = false;
 
-            do {
-              var startTime = +new Date();
-              scheduler.performSeriesTasks(ecModel); // Currently dataProcessorFuncs do not check threshold.
+          do {
+            var startTime = +new Date();
+            scheduler.performSeriesTasks(ecModel); // Currently dataProcessorFuncs do not check threshold.
 
-              scheduler.performDataProcessorTasks(ecModel);
-              updateStreamModes(this, ecModel); // Do not update coordinate system here. Because that coord system update in
-              // each frame is not a good user experience. So we follow the rule that
-              // the extent of the coordinate system is determin in the first frame (the
-              // frame is executed immedietely after task reset.
-              // this._coordSysMgr.update(ecModel, api);
-              // console.log('--- ec frame visual ---', remainTime);
+            scheduler.performDataProcessorTasks(ecModel);
+            updateStreamModes(this, ecModel); // Do not update coordinate system here. Because that coord system update in
+            // each frame is not a good user experience. So we follow the rule that
+            // the extent of the coordinate system is determin in the first frame (the
+            // frame is executed immedietely after task reset.
+            // this._coordSysMgr.update(ecModel, api);
+            // console.log('--- ec frame visual ---', remainTime);
 
-              scheduler.performVisualTasks(ecModel);
-              renderSeries(this, this._model, api, 'remain', {});
-              remainTime -= +new Date() - startTime;
-            } while (remainTime > 0 && scheduler.unfinished); // Call flush explicitly for trigger finished event.
+            scheduler.performVisualTasks(ecModel);
+            renderSeries(this, this._model, api, 'remain', {});
+            remainTime -= +new Date() - startTime;
+          } while (remainTime > 0 && scheduler.unfinished); // Call flush explicitly for trigger finished event.
 
 
-            if (!scheduler.unfinished) {
-              this._zr.flush();
-            } // Else, zr flushing be ensue within the same frame,
-            // because zr flushing is after onframe event.
+          if (!scheduler.unfinished) {
+            this._zr.flush();
+          } // Else, zr flushing be ensue within the same frame,
+          // because zr flushing is after onframe event.
 
-          }
+        }
       };
 
       ECharts.prototype.getDom = function () {
@@ -27378,9 +27378,9 @@
                   return true;
                 } // If element has custom eventData of components
                 else if (ecData.eventData) {
-                    params = extend({}, ecData.eventData);
-                    return true;
-                  }
+                  params = extend({}, ecData.eventData);
+                  return true;
+                }
               }, true);
             } // Contract: if params prepared in mouse event,
             // these properties must be specified:
@@ -34970,15 +34970,15 @@
       // scenario, Use multiple grid with the xAxis sync, and only one xAxis shows
       // labels. `splitLine` and `axisTick` should be consistent in this case.
       else if (optionTickInterval === 'auto') {
-          var labelsResult = makeCategoryLabelsActually(axis, axis.getLabelModel());
-          tickCategoryInterval = labelsResult.labelCategoryInterval;
-          ticks = map(labelsResult.labels, function (labelItem) {
-            return labelItem.tickValue;
-          });
-        } else {
-          tickCategoryInterval = optionTickInterval;
-          ticks = makeLabelsByNumericCategoryInterval(axis, tickCategoryInterval, true);
-        } // Cache to avoid calling interval function repeatly.
+        var labelsResult = makeCategoryLabelsActually(axis, axis.getLabelModel());
+        tickCategoryInterval = labelsResult.labelCategoryInterval;
+        ticks = map(labelsResult.labels, function (labelItem) {
+          return labelItem.tickValue;
+        });
+      } else {
+        tickCategoryInterval = optionTickInterval;
+        ticks = makeLabelsByNumericCategoryInterval(axis, tickCategoryInterval, true);
+      } // Cache to avoid calling interval function repeatly.
 
 
       return listCacheSet(ticksCache, optionTickInterval, {
@@ -35104,11 +35104,11 @@
       } // Only update cache if cache not used, otherwise the
       // changing of interval is too insensitive.
       else {
-          cache.lastTickCount = tickCount;
-          cache.lastAutoInterval = interval;
-          cache.axisExtent0 = axisExtent[0];
-          cache.axisExtent1 = axisExtent[1];
-        }
+        cache.lastTickCount = tickCount;
+        cache.lastAutoInterval = interval;
+        cache.axisExtent0 = axisExtent[0];
+        cache.axisExtent1 = axisExtent[1];
+      }
 
       return interval;
     }
@@ -35739,14 +35739,14 @@
           if (isLabelIgnored // Not show when label is not shown in this state.
           || !retrieve2(stateShow, showNormal) // Use normal state by default if not set.
           ) {
-              var stateObj = isNormal ? labelLine : labelLine && labelLine.states[stateName];
+            var stateObj = isNormal ? labelLine : labelLine && labelLine.states[stateName];
 
-              if (stateObj) {
-                stateObj.ignore = true;
-              }
+            if (stateObj) {
+              stateObj.ignore = true;
+            }
 
-              continue;
-            } // Create labelLine if not exists
+            continue;
+          } // Create labelLine if not exists
 
 
           if (!labelLine) {
@@ -37719,18 +37719,18 @@
       } // If origin is specified as a number, use it as
       // valueStart directly
       else if (isNumber(valueOrigin) && !isNaN(valueOrigin)) {
-          valueStart = valueOrigin;
-        } // auto
-        else {
-            // Both positive
-            if (extent[0] > 0) {
-              valueStart = extent[0];
-            } // Both negative
-            else if (extent[1] < 0) {
-                valueStart = extent[1];
-              } // If is one positive, and one negative, onZero shall be true
+        valueStart = valueOrigin;
+      } // auto
+      else {
+        // Both positive
+        if (extent[0] > 0) {
+          valueStart = extent[0];
+        } // Both negative
+        else if (extent[1] < 0) {
+          valueStart = extent[1];
+        } // If is one positive, and one negative, onZero shall be true
 
-          }
+      }
 
       return valueStart;
     }
@@ -38977,9 +38977,9 @@
             polygon = this._newPolygon(points, stackedOnPoints);
           } // If areaStyle is removed
           else if (polygon) {
-              lineGroup.remove(polygon);
-              polygon = this._polygon = null;
-            } // NOTE: Must update _endLabel before setClipPath.
+            lineGroup.remove(polygon);
+            polygon = this._polygon = null;
+          } // NOTE: Must update _endLabel before setClipPath.
 
 
           if (!isCoordSysPolar) {
@@ -39164,8 +39164,8 @@
               return;
             }
 
-            var zlevel = seriesModel.get('zlevel');
-            var z = seriesModel.get('z');
+            var zlevel = seriesModel.get('zlevel') || 0;
+            var z = seriesModel.get('z') || 0;
             symbol = new Symbol(data, dataIndex);
             symbol.x = x;
             symbol.y = y;
@@ -40464,8 +40464,8 @@
           } // Not change anything if only order changed.
           // Especially not change label.
           else {
-              updateStyle(el, data, newIndex, itemModel, layout, seriesModel, isHorizontalOrRadial, coord.type === 'polar');
-            }
+            updateStyle(el, data, newIndex, itemModel, layout, seriesModel, isHorizontalOrRadial, coord.type === 'polar');
+          }
 
           if (isInitSort) {
             el.attr({
@@ -41659,9 +41659,9 @@
           ? null // Current available is smaller than text width, so
           // use the current available width as constraining
           // width.
-          : availableInnerWidth : // Current available width is enough, so no need to
+          : availableInnerWidth // Current available width is enough, so no need to
           // constrain.
-          null;
+          : null;
           label.setStyle('width', newWidth);
         }
 
@@ -41731,7 +41731,8 @@
 
         if (Math.abs(sectorShape.endAngle - sectorShape.startAngle) < minShowLabelRadian) {
           each(label.states, setNotShow);
-          label.ignore = true;
+          each(labelLine.states, setNotShow);
+          label.ignore = labelLine.ignore = true;
           return;
         }
 
@@ -41992,26 +41993,26 @@
             }, seriesModel, idx);
           } // Expansion
           else {
-              if (startAngle != null) {
-                sector.setShape({
-                  startAngle: startAngle,
-                  endAngle: startAngle
-                });
-                initProps(sector, {
-                  shape: {
-                    startAngle: layout.startAngle,
-                    endAngle: layout.endAngle
-                  }
-                }, seriesModel, idx);
-              } else {
-                sector.shape.endAngle = layout.startAngle;
-                updateProps(sector, {
-                  shape: {
-                    endAngle: layout.endAngle
-                  }
-                }, seriesModel, idx);
-              }
+            if (startAngle != null) {
+              sector.setShape({
+                startAngle: startAngle,
+                endAngle: startAngle
+              });
+              initProps(sector, {
+                shape: {
+                  startAngle: layout.startAngle,
+                  endAngle: layout.endAngle
+                }
+              }, seriesModel, idx);
+            } else {
+              sector.shape.endAngle = layout.startAngle;
+              updateProps(sector, {
+                shape: {
+                  endAngle: layout.endAngle
+                }
+              }, seriesModel, idx);
             }
+          }
         } else {
           saveOldStyle(sector); // Transition animation from the old shape
 
@@ -43482,12 +43483,12 @@
           axis = this.getAxis('y', yAxisModel.componentIndex);
         } // Lowest priority.
         else if (gridModel) {
-            var grid = gridModel.coordinateSystem;
+          var grid = gridModel.coordinateSystem;
 
-            if (grid === this) {
-              cartesian = this._coordsList[0];
-            }
+          if (grid === this) {
+            cartesian = this._coordsList[0];
           }
+        }
 
         return {
           cartesian: cartesian,
@@ -43906,6 +43907,7 @@
         var matrix = transformGroup.transform;
         var pt1 = [extent[0], 0];
         var pt2 = [extent[1], 0];
+        var inverse = pt1[0] > pt2[0];
 
         if (matrix) {
           applyTransform(pt1, pt1, matrix);
@@ -43962,10 +43964,11 @@
               var symbol = createSymbol(arrows[index], -symbolWidth_1 / 2, -symbolHeight_1 / 2, symbolWidth_1, symbolHeight_1, lineStyle.stroke, true); // Calculate arrow position with offset
 
               var r = point.r + point.offset;
+              var pt = inverse ? pt2 : pt1;
               symbol.attr({
                 rotation: point.rotate,
-                x: pt1[0] + r * Math.cos(opt.rotation),
-                y: pt1[1] - r * Math.sin(opt.rotation),
+                x: pt[0] + r * Math.cos(opt.rotation),
+                y: pt[1] - r * Math.sin(opt.rotation),
                 silent: true,
                 z2: 11
               });
