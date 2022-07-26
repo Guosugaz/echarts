@@ -117,7 +117,9 @@ class ScrollableLegendView extends LegendView {
         selectorPosition: ScrollableLegendOption['selectorPosition']
     ) {
         const self = this;
+        const rotation = legendModel.get('scrollRotate');
 
+        this.group.rotation = (rotation || 0) * Math.PI / 180 || 0;
         // Render content items.
         super.renderInner(itemAlign, legendModel, ecModel, api, selector, orient, selectorPosition);
 

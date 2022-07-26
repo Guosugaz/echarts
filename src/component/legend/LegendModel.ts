@@ -236,7 +236,15 @@ export interface LegendOption extends ComponentOption, LegendStyleOption,
      */
     tooltip?: CommonTooltipOption<LegendTooltipFormatterParams>
 
+    /**
+     * 旋转
+     */
     rotate?: number
+
+    /**
+     * Scroll View 旋转
+     */
+    scrollRotate?: number
 }
 
 class LegendModel<Ops extends LegendOption = LegendOption> extends ComponentModel<Ops> {
